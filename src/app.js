@@ -14,6 +14,7 @@ import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
 import IndexNavbar from 'components/Navbars/IndexNavbar';
 import Login from 'views/Auth/Login';
+import Register from 'views/Auth/Register';
 
 const app = () => {
     return (
@@ -22,6 +23,7 @@ const app = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
                 {/* remove this part later */}
                 <Route path="/index" element={<Index />} />

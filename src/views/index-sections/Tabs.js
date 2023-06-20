@@ -15,7 +15,7 @@ import {
   Col,
 } from "reactstrap";
 
-// core components
+// core components 
 
 function Tabs() {
   const [iconPills, setIconPills] = React.useState("1");

@@ -24,6 +24,7 @@ import CompleteExamples from "./index-sections/CompleteExamples.js";
 import SignUp from "./index-sections/SignUp.js";
 import Examples from "./index-sections/Examples.js";
 import Download from "./index-sections/Download.js";
+import ArticleCard from "./index-sections/ArticleCard.js";
 
 function Home() {
   React.useEffect(() => {
@@ -40,7 +41,7 @@ function Home() {
   return (
     <>
         <div className="main">
-          
+          <ArticleCard />
         </div>
     </>
   );

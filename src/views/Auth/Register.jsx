@@ -15,11 +15,9 @@ import {
   Container,
   Col
 } from "reactstrap";
-
-
 import { Link } from "react-router-dom";
 
-function Login() {
+function Register() {
   const [firstFocus, setFirstFocus] = React.useState(false);
   const [lastFocus, setLastFocus] = React.useState(false);
   React.useEffect(() => {
@@ -33,11 +31,6 @@ function Login() {
       document.body.classList.remove("sidebar-collapse");
     };
   }, []);
-
-  const HandleLogin = (e) => {
-    e.preventDefault()
-    console.log(e);
-  }
   return (
     <>
       <div className="page-header clear-filter" filter-color="blue">
@@ -51,8 +44,26 @@ function Login() {
           <Container>
             <Col className="ml-auto mr-auto" md="4">
               <Card className="card-login card-plain">
-                <Form className="form" onSubmit={HandleLogin}>
+                <Form action="" className="form" method="">
                   <CardBody>
+                    <InputGroup
+                      className={
+                        "no-border input-lg" +
+                        (firstFocus ? " input-group-focus" : "")
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="now-ui-icons users_circle-08"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        placeholder="Enter Name..."
+                        type="text"
+                        onFocus={() => setFirstFocus(true)}
+                        onBlur={() => setFirstFocus(false)}
+                      ></Input>
+                    </InputGroup>
                     <InputGroup
                       className={
                         "no-border input-lg" +
@@ -95,19 +106,18 @@ function Login() {
                       block
                       className="btn-round"
                       color="info"
-                      type="submit"
+                      onClick={(e) => e.preventDefault()}
                       size="lg"
                     >
-                      Login
+                      Get Started
                     </Button>
-                    <div className="pull-center mt-3">
+                    <div className="pull-center">
                       <h6>
                         <Link
                           className="link"
-                            to='/register'
-                        
+                            to='/login'
                         >
-                          Create Account
+                          Login Here
                         </Link>
                       </h6>
                     </div>
@@ -122,4 +132,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
