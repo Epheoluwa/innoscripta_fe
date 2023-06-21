@@ -15,13 +15,19 @@ import ProfilePage from "views/examples/ProfilePage.js";
 import IndexNavbar from 'components/Navbars/IndexNavbar';
 import Login from 'views/Auth/Login';
 import Register from 'views/Auth/Register';
+import Protected from 'Utils/Protected';
 
 const app = () => {
+ 
     return (
         <>
             <IndexNavbar />
+
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route element={<Protected />}>
+                    <Route path="/" element={<Home />} />
+                </Route>
+
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
@@ -33,7 +39,7 @@ const app = () => {
                 <Route path="/profile-page" element={<ProfilePage />} />
                 <Route path="/login-page" element={<LoginPage />} />
 
-                <Route path="*" element={<Navigate to="/index" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </>
     )

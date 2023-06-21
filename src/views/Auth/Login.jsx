@@ -17,11 +17,13 @@ import {
 } from "reactstrap";
 
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import apiClient from "Utils/api";
 
 function Login() {
   const [firstFocus, setFirstFocus] = React.useState(false);
   const [lastFocus, setLastFocus] = React.useState(false);
+  const navigate = useNavigate();
   React.useEffect(() => {
     document.body.classList.add("login-page");
     document.body.classList.add("sidebar-collapse");
@@ -36,7 +38,28 @@ function Login() {
 
   const HandleLogin = (e) => {
     e.preventDefault()
-    console.log(e);
+
+    // apiClient.get('api/user')
+    //   .then(response => {
+    //     console.log(response);
+
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
+    const value = new FormData(e.currentTarget);
+    apiClient.post('api/login', value)
+    .then(response => {
+      if (response.data.status === 201) {
+        sessionStorage.setItem('token', response.data.data.token);
+        navigate('/');
+      }
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
   return (
     <>
@@ -67,6 +90,7 @@ function Login() {
                       <Input
                         placeholder="Enter Email..."
                         type="email"
+                        name="email"
                         onFocus={() => setFirstFocus(true)}
                         onBlur={() => setFirstFocus(false)}
                       ></Input>
@@ -84,7 +108,8 @@ function Login() {
                       </InputGroupAddon>
                       <Input
                         placeholder="Password..."
-                        type="text"
+                        type="password"
+                        name="password"
                         onFocus={() => setLastFocus(true)}
                         onBlur={() => setLastFocus(false)}
                       ></Input>
@@ -104,8 +129,8 @@ function Login() {
                       <h6>
                         <Link
                           className="link"
-                            to='/register'
-                        
+                          to='/register'
+
                         >
                           Create Account
                         </Link>

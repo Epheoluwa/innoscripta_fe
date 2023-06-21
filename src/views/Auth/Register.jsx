@@ -15,11 +15,13 @@ import {
   Container,
   Col
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import apiClient from "Utils/api";
 
 function Register() {
   const [firstFocus, setFirstFocus] = React.useState(false);
   const [lastFocus, setLastFocus] = React.useState(false);
+  const navigate = useNavigate();
   React.useEffect(() => {
     document.body.classList.add("login-page");
     document.body.classList.add("sidebar-collapse");
@@ -30,7 +32,26 @@ function Register() {
       document.body.classList.remove("login-page");
       document.body.classList.remove("sidebar-collapse");
     };
+
+    
   }, []);
+
+  const HandleRegister = (e) => {
+    e.preventDefault()
+
+    const value = new FormData(e.currentTarget);
+    apiClient.post('api/register', value)
+      .then(response => {
+        if (response.data.status === 201) {
+          sessionStorage.setItem('token', response.data.data.token);
+          navigate('/');
+        }
+       
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   return (
     <>
       <div className="page-header clear-filter" filter-color="blue">
@@ -44,7 +65,7 @@ function Register() {
           <Container>
             <Col className="ml-auto mr-auto" md="4">
               <Card className="card-login card-plain">
-                <Form action="" className="form" method="">
+                <Form className="form" onSubmit={HandleRegister}>
                   <CardBody>
                     <InputGroup
                       className={
@@ -62,6 +83,7 @@ function Register() {
                         type="text"
                         onFocus={() => setFirstFocus(true)}
                         onBlur={() => setFirstFocus(false)}
+                        name="name"
                       ></Input>
                     </InputGroup>
                     <InputGroup
@@ -78,6 +100,7 @@ function Register() {
                       <Input
                         placeholder="Enter Email..."
                         type="email"
+                        name="email"
                         onFocus={() => setFirstFocus(true)}
                         onBlur={() => setFirstFocus(false)}
                       ></Input>
@@ -95,7 +118,8 @@ function Register() {
                       </InputGroupAddon>
                       <Input
                         placeholder="Password..."
-                        type="text"
+                        type="password"
+                        name="password"
                         onFocus={() => setLastFocus(true)}
                         onBlur={() => setLastFocus(false)}
                       ></Input>
@@ -106,7 +130,7 @@ function Register() {
                       block
                       className="btn-round"
                       color="info"
-                      onClick={(e) => e.preventDefault()}
+                      type="submit"
                       size="lg"
                     >
                       Get Started
@@ -115,7 +139,7 @@ function Register() {
                       <h6>
                         <Link
                           className="link"
-                            to='/login'
+                          to='/login'
                         >
                           Login Here
                         </Link>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Card,
   CardHeader,
@@ -10,15 +10,16 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { AuthContext } from "Context/AuthProvider";
 
 function ArticleCard() {
-  const [iconPills, setIconPills] = React.useState("1");
-  const [pills, setPills] = React.useState("1");
+
+  const {auth } = useContext(AuthContext);
   return (
     <>
       <div className="section section-tabs">
         <Container>
-          <p className="category">All Articles</p>
+          <p className="category">{auth.name} prefered Articles</p>
           <Row>
             <Col className="ml-auto mr-auto" md="10" xl="2">
               <Card>

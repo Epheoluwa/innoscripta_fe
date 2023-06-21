@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -18,10 +18,20 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
-
+import useLogout from "Utils/useLogout";
+import { AuthContext } from "Context/AuthProvider";
 function IndexNavbar() {
+
+  const { auth } = useContext(AuthContext);
+
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [modal1, setModal1] = React.useState(false);
+  const logout = useLogout();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <>
       {collapseOpen ? (
@@ -69,45 +79,59 @@ function IndexNavbar() {
             navbar
           >
             <Nav navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  href="#pablo"
-                  nav
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="now-ui-icons ui-1_settings-gear-63"></i>
-                  <p>Settings</p>
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem onClick={() => setModal1(true)} tag={Link}>
-                    <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
-                    Preferences
-                  </DropdownItem>
-                  <DropdownItem to="/index" tag={Link}>
-                    <Button
-                      color="primary"
-                      className="mr-1"
+              {
+                auth.name ?
+                  <>
+                    <NavItem>
+                      <NavLink
+                      >
+                        <i className="now-ui-icons users_circle-08"></i>
+                        {auth.name}
+                      </NavLink>
+                    </NavItem>
+                    <UncontrolledDropdown nav>
+                      <DropdownToggle
+                        caret
+                        color="default"
+                        href="#pablo"
+                        nav
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <i className="now-ui-icons ui-1_settings-gear-63"></i>
+                        <p>Settings</p>
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() => setModal1(true)} tag={Link}>
+                          <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
+                          Preferences
+                        </DropdownItem>
+                        <DropdownItem tag={Link}>
+                          <Button
+                            color="primary"
+                            className="mr-1"
+                            onClick={handleLogout}
+                          >
+                            <i className="now-ui-icons ui-1_send mr-1"></i>
+                            Logout
+                          </Button>
 
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </>
+                  :
+
+                  <NavItem>
+                    <NavLink
+                      href="/login"
                     >
-                      <i className="now-ui-icons ui-1_send mr-1"></i>
-                      Logout
-                    </Button>
+                      <i className="now-ui-icons users_circle-08"></i>
+                      Login
+                    </NavLink>
+                  </NavItem>
+              }
 
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              {/* <NavItem>
-                <NavLink
-                  href="https://twitter.com/CreativeTim?ref=creativetim"
-                  target="_blank"
-                  id="twitter-tooltip"
-                >
-                  <i className="now-ui-icons users_circle-08"></i>
-                  Login
-                </NavLink>
-              </NavItem> */}
+
             </Nav>
           </Collapse>
         </Container>
