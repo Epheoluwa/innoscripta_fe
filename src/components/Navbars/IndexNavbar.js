@@ -90,6 +90,19 @@ function IndexNavbar() {
                         {auth.name}
                       </NavLink>
                     </NavItem>
+                    <NavItem>
+                      <NavLink
+
+                      >
+                        <Link
+                          to='/news'
+                        >
+                          <i className="now-ui-icons users_circle-08"></i>
+                          News
+                        </Link>
+
+                      </NavLink>
+                    </NavItem>
                     <UncontrolledDropdown nav>
                       <DropdownToggle
                         caret
@@ -102,9 +115,15 @@ function IndexNavbar() {
                         <p>Settings</p>
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem onClick={() => setModal1(true)} tag={Link}>
-                          <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
-                          Preferences
+                        <DropdownItem tag={Link}>
+                          <Link
+                            to="/personalised"
+                            style={{ color: 'black' }}
+                          >
+                            <i className="now-ui-icons business_chart-pie-36 mr-1"></i>
+                            Preferences
+                          </Link>
+
                         </DropdownItem>
                         <DropdownItem tag={Link}>
                           <Button
@@ -152,20 +171,11 @@ function IndexNavbar() {
         <ModalBody>
           <Form>
             <Row>
-              <Col>
-              
+              <Col md>
+
               </Col>
             </Row>
           </Form>
-          <p>
-            Far far away, behind the word mountains, far from the
-            countries Vokalia and Consonantia, there live the blind
-            texts. Separated they live in Bookmarksgrove right at the
-            coast of the Semantics, a large language ocean. A small
-            river named Duden flows by their place and supplies it with
-            the necessary regelialia. It is a paradisematic country, in
-            which roasted parts of sentences fly into your mouth.
-          </p>
         </ModalBody>
         <div className="modal-footer">
           <Button

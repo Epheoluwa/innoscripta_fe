@@ -40,9 +40,10 @@ function Home() {
   });
   return (
     <>
-        <div className="main">
-          <ArticleCard />
-        </div>
+      <IndexNavbar />
+      <div className="main">
+        <ArticleCard />
+      </div>
     </>
   );
 }

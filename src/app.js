@@ -16,16 +16,20 @@ import IndexNavbar from 'components/Navbars/IndexNavbar';
 import Login from 'views/Auth/Login';
 import Register from 'views/Auth/Register';
 import Protected from 'Utils/Protected';
+import Personalised from 'views/Personalised';
+import PersonalisedNews from 'views/PersonalisedNews';
 
 const app = () => {
  
     return (
         <>
-            <IndexNavbar />
+            {/* <IndexNavbar /> */}
 
             <Routes>
                 <Route element={<Protected />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/personalised" element={<Personalised />} />
+                    <Route path="/news" element={<PersonalisedNews />} />
                 </Route>
 
                 <Route path="/login" element={<Login />} />

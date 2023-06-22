@@ -2,8 +2,8 @@ import { styled } from "styled-components";
 
 export const StyledContainer = styled.section`
     padding: 0.5rem 4rem;
-    @media screen and (max-width: 600px) {
-        padding: 0.5rem 0.5rem;
+    @media screen and (max-width: 800px) {
+        padding: 0.5rem 1rem;
     }
 `;
 export const StyledFlexDiv = styled.div`
@@ -11,9 +11,16 @@ export const StyledFlexDiv = styled.div`
     gap: 2rem;
     padding: 1rem 1rem;
     justify-content: center;
+    flex-wrap: wrap;
+    @media screen and (max-width: 800px) {
+      
+  }
 `;
 export const StyledFlexDivSpace = styled(StyledFlexDiv)`
     justify-content: space-between;
+    @media screen and (max-width: 600px) {
+      gap: 0;
+    }
 `;
 
 export const StyledDivider = styled.div`

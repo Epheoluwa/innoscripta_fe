@@ -21,6 +21,7 @@ import { StyledDivider } from "components/Card/StyledCard";
 import { StyledFlexDivSpace } from "components/Card/StyledCard";
 import { StyledWith1 } from "components/Card/StyledCard";
 import { StyledWith2 } from "components/Card/StyledCard";
+import Loader from "./Loader";
 
 function ArticleCard() {
   const [articles, SetActicles] = useState([]);
@@ -30,8 +31,24 @@ function ArticleCard() {
   const [category, SetCategory] = useState(null);
   const [sources, SetSources] = useState([]);
   const [selectedsources, setSelectedSources] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const categoryList = ["business", "entertainment", "general", "health", "science", "sports", "technology"];
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
+
+  // Calculate the index range for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Get the current page items
+  const currentItems = articles.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
 
   const handleCheckboxChange = (value) => {
     if (selectedsources.includes(value)) {
@@ -41,12 +58,31 @@ function ArticleCard() {
     }
   };
 
-  console.log(selectedsources);
+  const handleCategoryChange = (value) => {
+    SetCategory(value)
+    setLoading(true);
+    fetcharticles(search, fromDate, toDate, value)
+  };
+
+  const handleFromChange = (e) => {
+    const formattedDate = e.format('YYYY-MM-DD');
+    SetFromDate(formattedDate)
+    fetcharticles(search, formattedDate, toDate, category)
+  };
+
+  const handleToChange = (e) => {
+    const formattedDate = e.format('YYYY-MM-DD');
+    SetToDate(formattedDate)
+    setLoading(true);
+    fetcharticles(search, fromDate, formattedDate, category)
+  };
+
 
   const handleSearchInput = (e) => {
     SetSearch(e.target.value);
   }
   const handleSearch = () => {
+    setLoading(true);
     fetcharticles(search, fromDate, toDate, category)
   }
 
@@ -65,6 +101,7 @@ function ArticleCard() {
       .then(response => {
         setSelectedSources([]);
         SetActicles(response.data);
+        setLoading(false);
         const art = response.data;
         art.forEach(element => {
           const src = element.Source;
@@ -96,17 +133,15 @@ function ArticleCard() {
   const { auth } = useContext(AuthContext);
   return (
     <>
-      <div className="section section-tabs">
+      <div className="section">
         <StyledContainer>
           <Card>
             <CardBody>
-
-
               <StyledFlexDivSpace>
                 <StyledWith1>
                   <p className="text-center">Search</p>
                   <Row>
-                    <Col xl="8" md="8"  >
+                    <Col xl="8" md="8" sm="8" >
                       <FormGroup>
                         <Input
                           className="form-control-success"
@@ -117,7 +152,7 @@ function ArticleCard() {
                         ></Input>
                       </FormGroup>
                     </Col>
-                    <Col xl="3" md="4">
+                    <Col xl="3" md="4" sm="4">
                       <Button
                         className="btn btn-info mt-0"
                         onClick={handleSearch}
@@ -141,6 +176,8 @@ function ArticleCard() {
                           <Datetime
                             timeFormat={false}
                             inputProps={{ placeholder: "From" }}
+                            dateFormat="YYYY-MM-DD"
+                            onChange={handleFromChange}
                           />
                         </FormGroup>
                       </div>
@@ -151,66 +188,14 @@ function ArticleCard() {
                           <Datetime
                             timeFormat={false}
                             inputProps={{ placeholder: "to" }}
+                            dateFormat="YYYY-MM-DD"
+                            onChange={handleToChange}
                           />
                         </FormGroup>
                       </div>
                     </Col>
                   </Row>
                 </StyledWith2>
-                {/* <Col xl="8" sm="12" md="7">
-                  <p className="text-center">Search</p>
-                  <Row>
-                    <Col xl="8" md="8"  >
-                      <FormGroup>
-                        <Input
-                          className="form-control-success"
-                          placeholder="Search Articles"
-                          type="text"
-                          value={search}
-                          onChange={handleSearchInput}
-                        ></Input>
-                      </FormGroup>
-                    </Col>
-                    <Col xl="3" md="4">
-                      <Button
-                        className="btn btn-info mt-0"
-                        onClick={handleSearch}
-                      >
-                        Search
-                      </Button>
-                    </Col>
-                  </Row>
-
-                </Col>
-                <Col xl="1" sm="1" md="1">
-                  <StyledDivider />
-                </Col>
-
-                <Col xl="3" sm="12" md="4">
-                  <p className="text-center">Sort by Date</p>
-                  <Row>
-                    <Col md="6">
-                      <div className="datepicker-container">
-                        <FormGroup>
-                          <Datetime
-                            timeFormat={false}
-                            inputProps={{ placeholder: "From" }}
-                          />
-                        </FormGroup>
-                      </div>
-                    </Col>
-                    <Col md="6">
-                      <div className="datepicker-container">
-                        <FormGroup>
-                          <Datetime
-                            timeFormat={false}
-                            inputProps={{ placeholder: "to" }}
-                          />
-                        </FormGroup>
-                      </div>
-                    </Col>
-                  </Row>
-                </Col> */}
               </StyledFlexDivSpace>
             </CardBody>
           </Card>
@@ -219,10 +204,9 @@ function ArticleCard() {
             <StyledFlexDiv>
               {categoryList.map((item, index) => {
                 return (
-
                   <FormGroup check key={index}>
                     <Label check>
-                      <Input type="checkbox" name={item} checked={selectedsources.includes(item)} onChange={() => handleCheckboxChange(item)}></Input>
+                      <Input type="checkbox" name={item} checked={category === item} onChange={() => handleCategoryChange(item)}></Input>
                       <span className="form-check-sign"></span>
                       {item}
                     </Label>
@@ -232,9 +216,9 @@ function ArticleCard() {
               })}
             </StyledFlexDiv>
           </Card>
-
+          {loading && <Loader />}
           <Row>
-            <Col className="ml-auto mr-auto" md="3" xl="2">
+            <Col className="ml-auto mr-auto" md="3" xl="2" sm="3">
               <Card>
                 <CardBody>
                   <Row>
@@ -256,12 +240,12 @@ function ArticleCard() {
                 </CardBody>
               </Card>
             </Col>
-            <Col className="ml-auto mr-auto" md="9" xl="10">
+            <Col className="ml-auto mr-auto" md="9" xl="10" sm="9">
               <Row>
                 {
                   selectedsources.length === 0 ?
 
-                    articles.map((item, index) => {
+                    currentItems.map((item, index) => {
                       return (
                         <Col md="6" key={index}>
                           {
@@ -287,6 +271,17 @@ function ArticleCard() {
 
                 }
               </Row>
+              {Array.from({ length: Math.ceil(articles.length / itemsPerPage) }, (_, index) => (
+                <button
+                  className='btn center'
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  disabled={currentPage === index + 1}
+                >
+                  {index + 1}
+                </button>
+
+              ))}
 
             </Col>
 
