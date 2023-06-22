@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-// reactstrap components
 import {
   Button,
   Collapse,
@@ -14,9 +13,11 @@ import {
   NavLink,
   Nav,
   Container,
-  UncontrolledTooltip,
   Modal,
   ModalBody,
+  Form,
+  Row,
+  Col,
 } from "reactstrap";
 import useLogout from "Utils/useLogout";
 import { AuthContext } from "Context/AuthProvider";
@@ -146,9 +147,16 @@ function IndexNavbar() {
           >
             <i className="now-ui-icons ui-1_simple-remove"></i>
           </button>
-          <h4 className="title title-up">Modal title</h4>
+          <h4 className="title title-up">Preferences Setting</h4>
         </div>
         <ModalBody>
+          <Form>
+            <Row>
+              <Col>
+              
+              </Col>
+            </Row>
+          </Form>
           <p>
             Far far away, behind the word mountains, far from the
             countries Vokalia and Consonantia, there live the blind
@@ -160,9 +168,6 @@ function IndexNavbar() {
           </p>
         </ModalBody>
         <div className="modal-footer">
-          <Button color="default" type="button">
-            Nice Button
-          </Button>
           <Button
             color="danger"
             type="button"
@@ -170,6 +175,10 @@ function IndexNavbar() {
           >
             Close
           </Button>
+          <Button color="default" type="button">
+            Save Preferences
+          </Button>
+
         </div>
       </Modal>
     </>

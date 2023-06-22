@@ -38,16 +38,6 @@ function Login() {
 
   const HandleLogin = (e) => {
     e.preventDefault()
-
-    // apiClient.get('api/user')
-    //   .then(response => {
-    //     console.log(response);
-
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
     const value = new FormData(e.currentTarget);
     apiClient.post('api/login', value)
     .then(response => {
