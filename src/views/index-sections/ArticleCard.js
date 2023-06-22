@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Label,
   Input,
-  Container,
   Row,
   Col,
   Button,
@@ -121,8 +119,6 @@ function ArticleCard() {
   };
 
   const filteredData = articles.filter((item) => selectedsources.includes(item.Source));
-
-  console.log(filteredData);
 
   useEffect(() => {
     fetcharticles(search, fromDate, toDate, category)
